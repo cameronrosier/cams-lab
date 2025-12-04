@@ -1,0 +1,39 @@
+# Enable Cilium CNI
+cni:
+  chainingMode: none
+
+# Enable Gateway API + Envoy (Cilium default implementation)
+gatewayAPI:
+  enabled: true
+
+envoy:
+  enabled: true
+
+kubeProxyReplacement: true
+k8sServiceHost: 127.0.0.1
+k8sServicePort: 6443
+
+# L2 LoadBalancer IPs
+l2announcements:
+  enabled: true
+
+# LoadBalancer IPAM
+ipam:
+  mode: "cluster-pool"
+  operator:
+    clusterPoolIPv4PodCIDR: "10.42.0.0/16"
+    clusterPoolIPv4MaskSize: 24
+
+loadBalancer:
+  algorithm: "maglev"
+  mode: "dsr"
+
+externalIPs:
+  enabled: true
+
+loadBalancerIPPool:
+  enabled: true
+  ipv4:
+    - cidr: "192.168.2.0/24"
+      start: "192.168.2.50"
+      end: "192.168.2.99"
