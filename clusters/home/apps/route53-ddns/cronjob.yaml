@@ -14,10 +14,13 @@ spec:
           restartPolicy: OnFailure
           containers:
           - name: route53-updater
-            image: amazon/aws-cli:latest
+            image: alpine:3.19
             command:
-            - /bin/bash
-            - /scripts/update-route53.sh
+            - /bin/sh
+            - -c
+            - |
+              apk add --no-cache aws-cli curl jq bash
+              /bin/bash /scripts/update-route53.sh
             env:
             - name: AWS_ACCESS_KEY_ID
               valueFrom:
