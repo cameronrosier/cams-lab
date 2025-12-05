@@ -7,3 +7,9 @@ spec:
   loadBalancerIPs: true
   interfaces:
     - wlan0
+  nodeSelector:
+    matchExpressions:
+      - key: kubernetes.io/hostname
+        operator: NotIn
+        values:
+          - kube-worker03
