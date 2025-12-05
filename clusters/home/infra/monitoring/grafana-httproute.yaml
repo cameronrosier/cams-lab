@@ -10,8 +10,7 @@ spec:
   parentRefs:
     - name: home-gateway
       namespace: default
-  hostnames:
-    - "cameronrosier.com"
+  # No hostnames = matches any host (including IPs)
   rules:
     - matches:
         - path:
