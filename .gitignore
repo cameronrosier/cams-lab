@@ -1,0 +1,23 @@
+# Age private keys - NEVER commit these!
+*.agekey
+age.agekey
+
+# SOPS working files
+.decrypted~*.yaml
+*_unencrypted.yaml
+
+# Flux bootstrap artifacts
+flux-system/
+
+# IDE
+.vscode/
+.idea/
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Temporary files
+*.tmp
+*.swp
+*~
