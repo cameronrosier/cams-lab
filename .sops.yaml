@@ -1,7 +1,4 @@
 ---
-# SOPS configuration file
-# This file tells SOPS which files to encrypt and which keys to use
-
 creation_rules:
   # Encrypt all files ending with -secret.yaml or secret.yaml in the clusters directory
   - path_regex: clusters/.*/.*secret\.yaml$
@@ -14,9 +11,3 @@ creation_rules:
     encrypted_regex: ^(data|stringData)$
     age: >-
       age1t7mjzrw5a3ch5vxzdk7sxj3q9qpj36qmjnskq4h408ne658r3quq75y8tu
-
-# Notes:
-# 1. Replace the 'age1xxx...' above with your actual age public key
-# 2. You can get your public key by running: grep 'public key:' age.agekey
-# 3. The 'encrypted_regex' ensures only sensitive fields are encrypted (not metadata)
-# 4. You can have multiple creation_rules for different paths or environments
