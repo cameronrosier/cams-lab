@@ -25,5 +25,5 @@ spec:
               type: ReplacePrefixMatch
               replacePrefixMatch: /
       backendRefs:
-        - name: grafana
+        - name: kube-prometheus-stack-grafana
           port: 80
