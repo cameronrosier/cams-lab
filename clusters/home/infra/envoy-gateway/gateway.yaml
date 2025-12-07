@@ -1,13 +1,13 @@
 ---
 # Gateway is the main ingress point for your cluster
-# This will get a LoadBalancer IP from your Cilium IP pool
+# This will get a LoadBalancer service (or use NodePort on WiFi)
 apiVersion: gateway.networking.k8s.io/v1
 kind: Gateway
 metadata:
   name: home-gateway
   namespace: default
 spec:
-  gatewayClassName: cilium
+  gatewayClassName: eg
   listeners:
     # HTTP listener on port 80
     - name: http
