@@ -31,6 +31,14 @@ spec:
           serve_from_sub_path: true
           domain: ""  # Don't enforce specific domain
           enforce_domain: false
+      # Enable persistent storage for Grafana
+      persistence:
+        enabled: true
+        type: pvc
+        storageClassName: "local-path"  # k3s default storage class
+        size: 10Gi
+        accessModes:
+          - ReadWriteOnce
       sidecar:
         dashboards:
           enabled: true
