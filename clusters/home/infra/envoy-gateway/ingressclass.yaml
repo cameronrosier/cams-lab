@@ -1,0 +1,7 @@
+---
+apiVersion: networking.k8s.io/v1
+kind: IngressClass
+metadata:
+  name: envoy
+spec:
+  controller: gateway.envoyproxy.io/gatewayclass-controller

@@ -22,11 +22,10 @@ spec:
   values:
     installCRDs: true
     
-    # Enable Gateway API support
-    featureGates: "ExperimentalGatewayAPISupport=true"
-    
-    # Enable Gateway controller
-    controller:
+    # Enable Gateway API support via ControllerConfiguration
+    config:
+      apiVersion: controller.config.cert-manager.io/v1alpha1
+      kind: ControllerConfiguration
       enableGatewayAPI: true
     
     # Enable Prometheus metrics
