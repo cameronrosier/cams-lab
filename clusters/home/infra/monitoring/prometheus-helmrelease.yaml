@@ -24,7 +24,8 @@ spec:
               targetLabel: node
     prometheus:
       prometheusSpec:
-        routePrefix: /lab/prometheus
+        externalUrl: http://192.168.2.205/lab/prometheus
+        routePrefix: /
     grafana:
       adminPassword: "admin"
       # Configure Grafana to work behind /lab/grafana path

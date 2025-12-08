@@ -16,7 +16,12 @@ spec:
         - path:
             type: PathPrefix
             value: /lab/prometheus
-      # No URL rewrite - Grafana handles the sub-path internally
+      filters:
+        - type: URLRewrite
+          urlRewrite:
+            path:
+              type: ReplacePrefixMatch
+              replacePrefixMatch: /
       backendRefs:
         - name: kube-prometheus-stack-prometheus
           port: 9090
