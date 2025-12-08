@@ -57,23 +57,6 @@ spec:
       limits:
         memory: 128Mi
     
-    # Mount host paths to collect logs
-    extraVolumes:
-      - name: containers
-        hostPath:
-          path: /var/lib/docker/containers
-      - name: pods
-        hostPath:
-          path: /var/log/pods
-    
-    extraVolumeMounts:
-      - name: containers
-        mountPath: /var/lib/docker/containers
-        readOnly: true
-      - name: pods
-        mountPath: /var/log/pods
-        readOnly: true
-    
     # Tolerate all taints to run on all nodes
     tolerations:
       - effect: NoSchedule
