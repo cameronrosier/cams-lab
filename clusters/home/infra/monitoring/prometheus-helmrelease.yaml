@@ -44,6 +44,14 @@ spec:
         size: 10Gi
         accessModes:
           - ReadWriteOnce
+      # Add Loki as a datasource
+      additionalDataSources:
+        - name: Loki
+          type: loki
+          access: proxy
+          url: http://loki-stack:3100
+          jsonData:
+            maxLines: 1000
       sidecar:
         dashboards:
           enabled: true
