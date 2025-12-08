@@ -23,7 +23,7 @@ spec:
     installCRDs: true
     
     # Enable Gateway API support
-    featureGates: "ExperimentalGatewayAPISupport=true"
+    featureGates: "ExperimentalGatewayAPISupport=true,GatewayAPI=true"
     
     # Enable Prometheus metrics
     prometheus:
