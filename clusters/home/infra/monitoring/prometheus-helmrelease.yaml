@@ -27,6 +27,13 @@ spec:
         # External URL for Prometheus UI links/redirects
         # Using relative path - works with any hostname or IP
         externalUrl: /lab/prometheus
+        # Discover ServiceMonitors and PodMonitors from all namespaces
+        serviceMonitorSelectorNilUsesHelmValues: false
+        serviceMonitorSelector: {}
+        serviceMonitorNamespaceSelector: {}
+        podMonitorSelectorNilUsesHelmValues: false
+        podMonitorSelector: {}
+        podMonitorNamespaceSelector: {}
     grafana:
       adminPassword: "admin"
       # Configure Grafana to work behind /lab/grafana path
