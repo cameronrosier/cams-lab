@@ -22,6 +22,12 @@ spec:
     remediation:
       retries: 3
   values:
+    # Override image to use multi-arch tag (default debian tags may not have ARM)
+    image:
+      registry: docker.io
+      repository: bitnami/postgresql
+      tag: "latest"
+    
     # Single replica (standalone mode)
     architecture: standalone
     
