@@ -1,7 +1,8 @@
 #!/bin/bash
 # Setup SOPS environment for working with encrypted secrets
 
-REPO_ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
+REPO_ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/" && pwd)"
+echo $REPO_ROOT
 
 # Check for age key in multiple locations
 if [ -f "$REPO_ROOT/age.agekey" ]; then

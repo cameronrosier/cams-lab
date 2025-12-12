@@ -22,10 +22,6 @@ spec:
     remediation:
       retries: 3
   values:
-    # PostgreSQL image - use the latest PostgreSQL 16
-    image:
-      tag: "16"
-    
     # Single replica (standalone mode)
     architecture: standalone
     
