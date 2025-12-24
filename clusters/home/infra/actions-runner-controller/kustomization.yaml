@@ -6,5 +6,6 @@ resources:
   - helmrepo.yaml
   - helmrelease.yaml
   - github-secret.yaml
-  - runnerdeployment.yaml
+  # RunnerDeployment will be added after HelmRelease installs CRDs
+  # - runnerdeployment.yaml
 
