@@ -8,4 +8,5 @@ resources:
   - github-secret.yaml
   - runnerdeployment.yaml
   - runnerdeployment-robopd2-api.yaml
+  - kaniko-rbac.yaml
 
