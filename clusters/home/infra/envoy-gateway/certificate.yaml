@@ -11,3 +11,16 @@ spec:
     kind: ClusterIssuer
   dnsNames:
     - "cameronrosier.com"
+---
+apiVersion: cert-manager.io/v1
+kind: Certificate
+metadata:
+  name: robopd2-cert
+  namespace: robopd2
+spec:
+  secretName: robopd2-tls
+  issuerRef:
+    name: letsencrypt-prod  # Production Let's Encrypt - trusted by browsers
+    kind: ClusterIssuer
+  dnsNames:
+    - "robopd2.com"
