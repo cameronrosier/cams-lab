@@ -36,6 +36,16 @@ spec:
             secretKeyRef:
               name: postgres-credentials
               key: password
+        - name: API_AUTH_USERNAME
+          valueFrom:
+            secretKeyRef:
+              name: api-auth-credentials
+              key: API_AUTH_USERNAME
+        - name: API_AUTH_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: api-auth-credentials
+              key: API_AUTH_PASSWORD
         resources:
           requests:
             cpu: 100m

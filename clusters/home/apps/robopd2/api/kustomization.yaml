@@ -7,4 +7,5 @@ resources:
   - service.yaml
   - imagerepository.yaml
   - imagepolicy.yaml
+  - api-auth-secret.yaml
 

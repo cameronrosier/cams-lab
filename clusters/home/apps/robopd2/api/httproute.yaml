@@ -26,4 +26,4 @@ spec:
               replacePrefixMatch: /
       backendRefs:
         - name: robopd2-api
-          port: 8000
+          port: 80
