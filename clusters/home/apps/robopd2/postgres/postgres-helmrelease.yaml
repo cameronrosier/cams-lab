@@ -88,6 +88,9 @@ spec:
       
       # PostgreSQL configuration tuned for Raspberry Pi
       configuration: |
+        # Listen on all interfaces (required for pod-to-pod connectivity)
+        listen_addresses = '*'
+        
         # Memory settings (conservative for 8GB Pi)
         shared_buffers = 256MB
         effective_cache_size = 512MB
