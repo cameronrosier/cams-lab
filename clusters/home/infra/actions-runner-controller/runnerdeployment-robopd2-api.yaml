@@ -40,5 +40,5 @@ spec:
         - name: docker-storage
           emptyDir: {}
       
-      nodeSelector:
-        node-role.kubernetes.io/control-plane: "false"
+      # Note: nodeSelector removed - control-plane node has taint that prevents scheduling
+      # Worker nodes don't have node-role.kubernetes.io/control-plane label

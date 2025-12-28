@@ -21,7 +21,7 @@ spec:
       persistence:
         enabled: true
         size: 10Gi
-        storageClassName: longhorn
+        storageClassName: local-path
       config:
         auth_enabled: false
         chunk_store_config:
