@@ -12,7 +12,7 @@ spec:
       version: "0.32.x"
       sourceRef:
         kind: HelmRepository
-        name: fluxcd-community
+        name: fluxcd
         namespace: flux-system
   install:
     crds: Create
