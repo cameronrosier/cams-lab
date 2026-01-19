@@ -1,0 +1,205 @@
+---
+apiVersion: apiextensions.k8s.io/v1
+kind: CustomResourceDefinition
+metadata:
+  name: imageupdateautomations.image.toolkit.fluxcd.io
+spec:
+  group: image.toolkit.fluxcd.io
+  names:
+    kind: ImageUpdateAutomation
+    listKind: ImageUpdateAutomationList
+    plural: imageupdateautomations
+    singular: imageupdateautomation
+  scope: Namespaced
+  versions:
+  - name: v1
+    served: true
+    storage: true
+    schema:
+      openAPIV3Schema:
+        description: ImageUpdateAutomation is the Schema for the imageupdateautomations API
+        properties:
+          apiVersion:
+            type: string
+          kind:
+            type: string
+          metadata:
+            type: object
+          spec:
+            description: ImageUpdateAutomationSpec defines the parameters for updating image refs
+            properties:
+              git:
+                description: Git contains the git repository where the image update should be committed and pushed
+                properties:
+                  checkout:
+                    description: Checkout gives the parameters for cloning the repository, ready to make changes
+                    properties:
+                      ref:
+                        description: Ref is a git ref
+                        type: string
+                    required:
+                    - ref
+                    type: object
+                  commit:
+                    description: Commit gives the commit parameters
+                    properties:
+                      author:
+                        description: Author gives the email and optionally the name, as in --author
+                        properties:
+                          email:
+                            type: string
+                          name:
+                            type: string
+                        required:
+                        - email
+                        type: object
+                      messageTemplate:
+                        description: MessageTemplate provides a template for the commit message, into which the following values are interpolated - Policies, PolicyCount
+                        type: string
+                    required:
+                    - author
+                    type: object
+                  push:
+                    description: Push gives the parameters for pushing the commit
+                    properties:
+                      branch:
+                        description: Branch specifies that commits should be pushed to the branch named
+                        type: string
+                      options:
+                        additionalProperties:
+                          type: string
+                        description: Options can be provided to determine how to push commits
+                        type: object
+                      refspec:
+                        description: Refspec specifies the git refspec to use for a push operation
+                        type: string
+                    type: object
+                required:
+                - checkout
+                - commit
+                type: object
+              interval:
+                description: Interval is the length of time to wait between scans for new image tags
+                pattern: ^([0-9]+(\.[0-9]+)?(ms|s|m|h))+$
+                type: string
+              policySelector:
+                description: PolicySelector allows to filter the policies considered for image automation by labels
+                properties:
+                  matchExpressions:
+                    items:
+                      properties:
+                        key:
+                          type: string
+                        operator:
+                          type: string
+                        values:
+                          items:
+                            type: string
+                          type: array
+                      required:
+                      - key
+                      - operator
+                      type: object
+                    type: array
+                  matchLabels:
+                    additionalProperties:
+                      type: string
+                    type: object
+                type: object
+              sourceRef:
+                description: SourceRef points at the resource being scanned for image updates
+                properties:
+                  apiVersion:
+                    type: string
+                  kind:
+                    enum:
+                    - GitRepository
+                    type: string
+                  name:
+                    type: string
+                required:
+                - kind
+                - name
+                type: object
+              update:
+                description: Update gives the policy for how to update image fields
+                properties:
+                  path:
+                    description: Path is a glob pattern for the paths to update image refs in
+                    type: string
+                  strategy:
+                    description: Strategy is the strategy to use for updating an image tag
+                    enum:
+                    - SetNewImagePolicy
+                    - Setimageregistry
+                    type: string
+                required:
+                - path
+                - strategy
+                type: object
+            required:
+            - git
+            - interval
+            - sourceRef
+            - update
+            type: object
+          status:
+            description: ImageUpdateAutomationStatus defines the observed state
+            properties:
+              conditions:
+                items:
+                  properties:
+                    lastTransitionTime:
+                      format: date-time
+                      type: string
+                    message:
+                      maxLength: 32768
+                      type: string
+                    observedGeneration:
+                      format: int64
+                      type: integer
+                    reason:
+                      maxLength: 1024
+                      minLength: 1
+                      pattern: ^[A-Za-z]([A-Za-z0-9_,:]*[A-Za-z0-9_])?$
+                      type: string
+                    status:
+                      enum:
+                      - "True"
+                      - "False"
+                      - Unknown
+                      type: string
+                    type:
+                      maxLength: 316
+                      pattern: ^([a-z0-9]([-a-z0-9]*[a-z0-9])?(\.[a-z0-9]([-a-z0-9]*[a-z0-9])?)*/)?(([A-Z0-9]|[a-z0-9])([-A-Z0-9_a-z0-9]*[A-Z0-9a-z0-9])?\.)+([A-Z]{2}|[0-9]{1,3})$|^([a-z0-9]([-a-z0-9]*[a-z0-9])?(\.[a-z0-9]([-a-z0-9]*[a-z0-9])?)*/)?([A-Za-z0-9][-A-Za-z0-9_.]*)?[A-Za-z0-9]$
+                      type: string
+                  required:
+                  - lastTransitionTime
+                  - message
+                  - reason
+                  - status
+                  - type
+                  type: object
+                type: array
+              lastAutomationRunTime:
+                description: LastAutomationRunTime records the last time the automation ran
+                format: date-time
+                type: string
+              lastPushCommit:
+                description: LastPushCommit records the commit hash of the last pushed change
+                type: string
+              lastPushTime:
+                description: LastPushTime records the last time an update was pushed to the git repository
+                format: date-time
+                type: string
+            type: object
+        type: object
+    subresources:
+      status: {}
+    additionalPrinterColumns:
+    - jsonPath: .status.lastPushTime
+      name: LastPushTime
+      type: date
+    - jsonPath: .status.lastPushCommit
+      name: LastPushCommit
+      type: string
