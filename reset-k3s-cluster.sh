@@ -2,8 +2,8 @@
 
 # ---- CONFIG ----
 CONTROLLER="kube-controller01"
-WORKERS=("kube-worker01" "kube-worker02" "kube-worker03")
-USER="pi"
+WORKERS=("kube-worker01")
+USER="cam"
 
 # ---- FUNCTIONS ----
 
