@@ -11,13 +11,15 @@ spec:
     privateKeySecretRef:
       name: letsencrypt-staging-key
     solvers:
-      # HTTP-01 challenge solver using Gateway API
-      - http01:
-          gatewayHTTPRoute:
-            parentRefs:
-              - name: home-gateway
-                namespace: default
-                kind: Gateway
+      # DNS-01 challenge solver using Route53
+      - dns01:
+          route53:
+            region: us-east-1
+            hostedZoneID: Z080644526H0WVW9PFWL5
+            accessKeyID: AKIA27W4KMSTRR4TKFK
+            secretAccessKey:
+              name: route53-credentials
+              key: AWS_SECRET_ACCESS_KEY
 ---
 apiVersion: cert-manager.io/v1
 kind: ClusterIssuer
@@ -31,10 +33,12 @@ spec:
     privateKeySecretRef:
       name: letsencrypt-prod-key
     solvers:
-      # HTTP-01 challenge solver using Gateway API
-      - http01:
-          gatewayHTTPRoute:
-            parentRefs:
-              - name: home-gateway
-                namespace: default
-                kind: Gateway
+      # DNS-01 challenge solver using Route53
+      - dns01:
+          route53:
+            region: us-east-1
+            hostedZoneID: Z080644526H0WVW9PFWL5
+            accessKeyID: AKIA27W4KMSTRR4TKFK
+            secretAccessKey:
+              name: route53-credentials
+              key: AWS_SECRET_ACCESS_KEY
