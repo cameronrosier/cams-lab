@@ -7,8 +7,9 @@ metadata:
 spec:
   interval: 10m
   dependsOn:
-    - name: infra-controllers
-    - name: infra-configs
+    - name: cert-manager-controller
+    - name: actions-runner-controller
+    - name: envoy-gateway
   sourceRef:
     kind: GitRepository
     name: flux-system
