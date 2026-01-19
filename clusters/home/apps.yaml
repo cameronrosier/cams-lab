@@ -9,7 +9,6 @@ spec:
   dependsOn:
     - name: cert-manager-controller
     - name: actions-runner-controller
-    - name: envoy-gateway
     - name: image-reflector-controller
   sourceRef:
     kind: GitRepository
