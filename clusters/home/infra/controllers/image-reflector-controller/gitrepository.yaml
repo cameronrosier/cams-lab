@@ -5,10 +5,10 @@ metadata:
   name: flux-manifests
   namespace: flux-system
 spec:
-  interval: 24h
+  interval: 10m
   url: https://github.com/fluxcd/flux2
   ref:
-    tag: v0.44.0
+    branch: main
   ignore: |
     # ignore all
     /*
