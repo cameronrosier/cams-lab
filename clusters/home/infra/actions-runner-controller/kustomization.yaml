@@ -6,6 +6,5 @@ resources:
   - helmrepo.yaml
   - helmrelease.yaml
   - github-secret.yaml
-  - runnerdeployment-robopd2-api.yaml
   - kaniko-rbac.yaml
 
