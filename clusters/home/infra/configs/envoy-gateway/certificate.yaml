@@ -11,8 +11,7 @@ spec:
     kind: ClusterIssuer
   dnsNames:
     - "cameronrosier.com"
-    - "www.cameronrosier.com"
-    - "*.cameronrosier.com"
+    - "*.cameronrosier.com"  # Wildcard covers www.cameronrosier.com
 ---
 apiVersion: cert-manager.io/v1
 kind: Certificate
