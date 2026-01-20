@@ -11,7 +11,7 @@ spec:
     privateKeySecretRef:
       name: letsencrypt-staging-key
     solvers:
-      # DNS-01 challenge solver using Route53 (avoids HTTP reachability issues)
+      # DNS-01 solver for cameronrosier.com
       - dns01:
           route53:
             region: us-east-1
@@ -20,6 +20,21 @@ spec:
             secretAccessKeySecretRef:
               name: route53-credentials
               key: AWS_SECRET_ACCESS_KEY
+        selector:
+          dnsZones:
+            - cameronrosier.com
+      # DNS-01 solver for robopd2.com
+      - dns01:
+          route53:
+            region: us-east-1
+            hostedZoneID: Z0040147OR3LU4U6S6K7
+            accessKeyID: AKIA27W4KMSRBRR4TKFK
+            secretAccessKeySecretRef:
+              name: route53-credentials
+              key: AWS_SECRET_ACCESS_KEY
+        selector:
+          dnsZones:
+            - robopd2.com
 ---
 apiVersion: cert-manager.io/v1
 kind: ClusterIssuer
@@ -33,7 +48,7 @@ spec:
     privateKeySecretRef:
       name: letsencrypt-prod-key
     solvers:
-      # DNS-01 challenge solver using Route53 (avoids HTTP reachability issues)
+      # DNS-01 solver for cameronrosier.com
       - dns01:
           route53:
             region: us-east-1
@@ -42,3 +57,18 @@ spec:
             secretAccessKeySecretRef:
               name: route53-credentials
               key: AWS_SECRET_ACCESS_KEY
+        selector:
+          dnsZones:
+            - cameronrosier.com
+      # DNS-01 solver for robopd2.com
+      - dns01:
+          route53:
+            region: us-east-1
+            hostedZoneID: Z0040147OR3LU4U6S6K7
+            accessKeyID: AKIA27W4KMSRBRR4TKFK
+            secretAccessKeySecretRef:
+              name: route53-credentials
+              key: AWS_SECRET_ACCESS_KEY
+        selector:
+          dnsZones:
+            - robopd2.com
