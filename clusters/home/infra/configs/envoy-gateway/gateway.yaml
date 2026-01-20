@@ -16,11 +16,10 @@ spec:
       allowedRoutes:
         namespaces:
           from: All
-    # HTTPS listener for cameronrosier.com
-    - name: https-cameronrosier
+    # HTTPS listener on port 443 (serves both cameronrosier.com and robopd2.com)
+    - name: https
       protocol: HTTPS
       port: 443
-      hostname: cameronrosier.com
       allowedRoutes:
         namespaces:
           from: All
@@ -30,17 +29,6 @@ spec:
           - kind: Secret
             name: cameronrosier-tls
             namespace: default
-    # HTTPS listener for robopd2.com
-    - name: https-robopd2
-      protocol: HTTPS
-      port: 443
-      hostname: robopd2.com
-      allowedRoutes:
-        namespaces:
-          from: All
-      tls:
-        mode: Terminate
-        certificateRefs:
           - kind: Secret
             name: robopd2-tls
             namespace: robopd2
