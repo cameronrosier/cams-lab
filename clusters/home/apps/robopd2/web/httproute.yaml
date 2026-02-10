@@ -1,0 +1,47 @@
+---
+# HTTPRoute for Robopd2 Web using Gateway API
+# Routes robopd2.com traffic: /v1,/health,/docs → API, everything else → web
+apiVersion: gateway.networking.k8s.io/v1
+kind: HTTPRoute
+metadata:
+  name: robopd2-web
+  namespace: robopd2
+spec:
+  parentRefs:
+    - name: home-gateway
+      namespace: default
+      sectionName: https
+  hostnames:
+    - "robopd2.com"
+    - "www.robopd2.com"
+  rules:
+    # API paths go directly to the API service
+    - matches:
+        - path:
+            type: PathPrefix
+            value: /v1
+      backendRefs:
+        - name: robopd2-api
+          port: 8000
+    - matches:
+        - path:
+            type: PathPrefix
+            value: /health
+      backendRefs:
+        - name: robopd2-api
+          port: 8000
+    - matches:
+        - path:
+            type: PathPrefix
+            value: /docs
+      backendRefs:
+        - name: robopd2-api
+          port: 8000
+    # Everything else goes to the web frontend
+    - matches:
+        - path:
+            type: PathPrefix
+            value: /
+      backendRefs:
+        - name: robopd2-web
+          port: 80

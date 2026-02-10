@@ -1,0 +1,17 @@
+---
+# Increase Envoy Gateway timeout for API requests (PD2 import can be slow)
+apiVersion: gateway.envoyproxy.io/v1alpha1
+kind: BackendTrafficPolicy
+metadata:
+  name: robopd2-api-timeout
+  namespace: robopd2
+spec:
+  targetRefs:
+    - group: gateway.networking.k8s.io
+      kind: HTTPRoute
+      name: robopd2-web
+  timeout:
+    http:
+      requestTimeout: 90s
+    tcp:
+      connectTimeout: 10s
