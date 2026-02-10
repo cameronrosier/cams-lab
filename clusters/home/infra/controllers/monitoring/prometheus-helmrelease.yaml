@@ -17,13 +17,52 @@ spec:
     createNamespace: false
   values:
     prometheus-node-exporter:
+      resources:
+        requests:
+          cpu: 10m
+          memory: 32Mi
+        limits:
+          cpu: 100m
+          memory: 64Mi
       prometheus:
         monitor:
           relabelings:
             - sourceLabels: [__meta_kubernetes_pod_node_name]
               targetLabel: node
+    alertmanager:
+      alertmanagerSpec:
+        resources:
+          requests:
+            cpu: 10m
+            memory: 32Mi
+          limits:
+            cpu: 50m
+            memory: 128Mi
+    prometheusOperator:
+      resources:
+        requests:
+          cpu: 10m
+          memory: 64Mi
+        limits:
+          cpu: 100m
+          memory: 256Mi
+    kube-state-metrics:
+      resources:
+        requests:
+          cpu: 10m
+          memory: 32Mi
+        limits:
+          cpu: 100m
+          memory: 128Mi
     prometheus:
       prometheusSpec:
+        resources:
+          requests:
+            cpu: 100m
+            memory: 256Mi
+          limits:
+            cpu: 500m
+            memory: 1Gi
         # External URL for Prometheus UI links/redirects
         # Using relative path - works with any hostname or IP
         externalUrl: /lab/prometheus
@@ -35,6 +74,13 @@ spec:
         podMonitorSelector: {}
         podMonitorNamespaceSelector: {}
     grafana:
+      resources:
+        requests:
+          cpu: 50m
+          memory: 128Mi
+        limits:
+          cpu: 200m
+          memory: 256Mi
       adminPassword: "admin"
       # Configure Grafana to work behind /lab/grafana path
       grafana.ini:

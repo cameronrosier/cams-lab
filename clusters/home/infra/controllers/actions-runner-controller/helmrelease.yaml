@@ -30,11 +30,11 @@ spec:
     controllerManager:
       resources:
         requests:
-          cpu: 100m
-          memory: 128Mi
+          cpu: 50m
+          memory: 64Mi
         limits:
-          cpu: 500m
-          memory: 512Mi
+          cpu: 250m
+          memory: 256Mi
       # Allow scheduling on control-plane nodes
       tolerations:
         - key: node-role.kubernetes.io/control-plane
@@ -45,20 +45,13 @@ spec:
     webhookServer:
       resources:
         requests:
-          cpu: 50m
-          memory: 64Mi
+          cpu: 25m
+          memory: 32Mi
         limits:
-          cpu: 200m
-          memory: 128Mi
-    
-    # Metrics server (optional, for Prometheus)
+          cpu: 100m
+          memory: 64Mi
+
+    # Metrics server disabled to save resources
     metricsServer:
-      enabled: true
-      resources:
-        requests:
-          cpu: 50m
-          memory: 64Mi
-        limits:
-          cpu: 200m
-          memory: 128Mi
+      enabled: false
 
