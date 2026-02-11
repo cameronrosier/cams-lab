@@ -8,12 +8,8 @@ spec:
   imageRepositoryRef:
     name: robopd2-api
   filterTags:
-    # Only match commit-SHA tags (main-*) - these are unique per build
-    # This ensures we detect new images even when the 'main' tag is reused
-    pattern: '^main-([a-f0-9]+)$'
+    pattern: '^main-(\d{14})$'
     extract: '$1'
   policy:
-    # Use alphabetical descending to get the latest commit SHA
     alphabetical:
-      order: desc
-
+      order: asc

@@ -8,8 +8,8 @@ spec:
   imageRepositoryRef:
     name: robopd2-web
   filterTags:
-    pattern: '^main-([a-f0-9]+)$'
+    pattern: '^main-(\d{14})$'
     extract: '$1'
   policy:
     alphabetical:
-      order: desc
+      order: asc
