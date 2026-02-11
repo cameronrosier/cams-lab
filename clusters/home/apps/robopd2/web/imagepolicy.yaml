@@ -1,0 +1,15 @@
+---
+apiVersion: image.toolkit.fluxcd.io/v1
+kind: ImagePolicy
+metadata:
+  name: robopd2-web
+  namespace: robopd2
+spec:
+  imageRepositoryRef:
+    name: robopd2-web
+  filterTags:
+    pattern: '^main-([a-f0-9]+)$'
+    extract: '$1'
+  policy:
+    alphabetical:
+      order: desc
