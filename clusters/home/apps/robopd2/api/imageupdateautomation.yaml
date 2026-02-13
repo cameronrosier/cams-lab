@@ -5,7 +5,7 @@ metadata:
   name: robopd2-api
   namespace: robopd2
 spec:
-  interval: 5m
+  interval: 1m
   sourceRef:
     kind: GitRepository
     name: flux-system
