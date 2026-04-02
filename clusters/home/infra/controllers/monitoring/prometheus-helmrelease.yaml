@@ -73,6 +73,44 @@ spec:
         podMonitorSelectorNilUsesHelmValues: false
         podMonitorSelector: {}
         podMonitorNamespaceSelector: {}
+        # Remote scraping of DO cluster metrics
+        additionalScrapeConfigs:
+          - job_name: 'robopd2-do-api'
+            scheme: https
+            metrics_path: /monitoring/api
+            basic_auth:
+              username: metrics
+              password: metrics2025
+            static_configs:
+              - targets: ['robopd2.com']
+                labels:
+                  cluster: digitalocean
+                  service: robopd2-api
+            scrape_interval: 30s
+          - job_name: 'robopd2-do-node'
+            scheme: https
+            metrics_path: /monitoring/node
+            basic_auth:
+              username: metrics
+              password: metrics2025
+            static_configs:
+              - targets: ['robopd2.com']
+                labels:
+                  cluster: digitalocean
+                  instance: do-droplet
+            scrape_interval: 60s
+          - job_name: 'robopd2-do-postgres'
+            scheme: https
+            metrics_path: /monitoring/postgres
+            basic_auth:
+              username: metrics
+              password: metrics2025
+            static_configs:
+              - targets: ['robopd2.com']
+                labels:
+                  cluster: digitalocean
+                  service: postgresql
+            scrape_interval: 60s
     grafana:
       resources:
         requests:
