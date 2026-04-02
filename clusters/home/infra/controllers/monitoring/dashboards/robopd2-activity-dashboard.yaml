@@ -1,0 +1,462 @@
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: grafana-dashboard-robopd2-activity
+  namespace: monitoring
+  labels:
+    grafana_dashboard: "1"
+data:
+  robopd2-activity.json: |
+    {
+      "annotations": { "list": [] },
+      "description": "RoboPD2 Planner Activity - Build trends, engagement, and fun stats",
+      "editable": true,
+      "graphTooltip": 1,
+      "id": null,
+      "links": [],
+      "panels": [
+        {
+          "collapsed": false,
+          "gridPos": { "h": 1, "w": 24, "x": 0, "y": 0 },
+          "id": 100,
+          "title": "Vanity Stats",
+          "type": "row"
+        },
+        {
+          "datasource": "Prometheus",
+          "fieldConfig": {
+            "defaults": {
+              "color": { "mode": "fixed", "fixedColor": "yellow" },
+              "mappings": [],
+              "thresholds": { "mode": "absolute", "steps": [{ "color": "yellow", "value": null }] },
+              "unit": "short"
+            }
+          },
+          "gridPos": { "h": 4, "w": 6, "x": 0, "y": 1 },
+          "id": 101,
+          "options": { "colorMode": "background", "graphMode": "none", "justifyMode": "center", "orientation": "auto", "reduceOptions": { "calcs": ["lastNotNull"], "fields": "", "values": false }, "textMode": "value_and_name" },
+          "targets": [{ "expr": "sum(robopd2_d2s_exports_total{success=\"True\"})", "instant": true, "legendFormat": "", "refId": "A" }],
+          "title": "Total Characters Exported",
+          "type": "stat"
+        },
+        {
+          "datasource": "Prometheus",
+          "fieldConfig": {
+            "defaults": {
+              "color": { "mode": "fixed", "fixedColor": "blue" },
+              "mappings": [],
+              "thresholds": { "mode": "absolute", "steps": [{ "color": "blue", "value": null }] },
+              "unit": "short"
+            }
+          },
+          "gridPos": { "h": 4, "w": 6, "x": 6, "y": 1 },
+          "id": 102,
+          "options": { "colorMode": "background", "graphMode": "none", "justifyMode": "center", "orientation": "auto", "reduceOptions": { "calcs": ["lastNotNull"], "fields": "", "values": false }, "textMode": "value_and_name" },
+          "targets": [{ "expr": "sum(robopd2_shared_builds_created_total)", "instant": true, "legendFormat": "", "refId": "A" }],
+          "title": "Total Builds Shared",
+          "type": "stat"
+        },
+        {
+          "datasource": "Prometheus",
+          "fieldConfig": {
+            "defaults": {
+              "color": { "mode": "fixed", "fixedColor": "green" },
+              "mappings": [{"options": {"ama": {"text": "Amazon"}, "sor": {"text": "Sorceress"}, "nec": {"text": "Necromancer"}, "pal": {"text": "Paladin"}, "bar": {"text": "Barbarian"}, "dru": {"text": "Druid"}, "ass": {"text": "Assassin"}}, "type": "value"}],
+              "thresholds": { "mode": "absolute", "steps": [{ "color": "green", "value": null }] },
+              "unit": "short"
+            }
+          },
+          "gridPos": { "h": 4, "w": 6, "x": 12, "y": 1 },
+          "id": 103,
+          "options": { "colorMode": "background", "graphMode": "none", "justifyMode": "center", "orientation": "auto", "reduceOptions": { "calcs": ["lastNotNull"], "fields": "", "values": false }, "textMode": "value_and_name" },
+          "targets": [{ "expr": "topk(1, sum by(class_id) (increase(robopd2_d2s_exports_total{success=\"True\"}[24h])))", "instant": true, "legendFormat": "{{class_id}}", "refId": "A" }],
+          "title": "Most Exported Class Today",
+          "type": "stat"
+        },
+        {
+          "datasource": "Prometheus",
+          "fieldConfig": {
+            "defaults": {
+              "color": { "mode": "fixed", "fixedColor": "purple" },
+              "mappings": [],
+              "thresholds": { "mode": "absolute", "steps": [{ "color": "purple", "value": null }] },
+              "unit": "short"
+            }
+          },
+          "gridPos": { "h": 4, "w": 6, "x": 18, "y": 1 },
+          "id": 104,
+          "options": { "colorMode": "background", "graphMode": "none", "justifyMode": "center", "orientation": "auto", "reduceOptions": { "calcs": ["lastNotNull"], "fields": "", "values": false }, "textMode": "value_and_name" },
+          "targets": [{ "expr": "bottomk(1, sum by(item_name) (robopd2_d2s_export_unique_item_total))", "instant": true, "legendFormat": "{{item_name}}", "refId": "A" }],
+          "title": "Rarest Unique Equipped",
+          "type": "stat"
+        },
+        {
+          "collapsed": false,
+          "gridPos": { "h": 1, "w": 24, "x": 0, "y": 5 },
+          "id": 200,
+          "title": "Hero Stats",
+          "type": "row"
+        },
+        {
+          "datasource": "Prometheus",
+          "fieldConfig": {
+            "defaults": {
+              "color": { "mode": "palette-classic" },
+              "mappings": [],
+              "thresholds": { "mode": "absolute", "steps": [{ "color": "green", "value": null }] },
+              "unit": "short"
+            }
+          },
+          "gridPos": { "h": 8, "w": 8, "x": 0, "y": 6 },
+          "id": 201,
+          "options": {
+            "legend": { "calcs": ["lastNotNull"], "displayMode": "table", "placement": "right", "showLegend": true },
+            "pieType": "donut",
+            "reduceOptions": { "calcs": ["lastNotNull"], "fields": "", "values": false },
+            "tooltip": { "mode": "single" }
+          },
+          "targets": [{ "expr": "sum by(class_id) (robopd2_d2s_exports_total{success=\"True\"})", "instant": true, "legendFormat": "{{class_id}}", "refId": "A" }],
+          "title": "Class Popularity (All Time)",
+          "type": "piechart"
+        },
+        {
+          "datasource": "Prometheus",
+          "fieldConfig": {
+            "defaults": {
+              "color": { "mode": "palette-classic" },
+              "custom": { "axisCenteredZero": false, "axisPlacement": "auto", "drawStyle": "bars", "fillOpacity": 80, "lineWidth": 1, "pointSize": 5, "showPoints": "never", "stacking": { "mode": "normal" } },
+              "mappings": [],
+              "thresholds": { "mode": "absolute", "steps": [{ "color": "green", "value": null }] },
+              "unit": "short"
+            }
+          },
+          "gridPos": { "h": 8, "w": 16, "x": 8, "y": 6 },
+          "id": 202,
+          "options": { "legend": { "calcs": ["sum"], "displayMode": "list", "placement": "bottom" }, "tooltip": { "mode": "single" } },
+          "targets": [{ "expr": "sum by(class_id) (increase(robopd2_d2s_exports_total{success=\"True\"}[1h]))", "legendFormat": "{{class_id}}", "refId": "A" }],
+          "title": "Exports Over Time (by class)",
+          "type": "timeseries"
+        },
+        {
+          "datasource": "Prometheus",
+          "fieldConfig": {
+            "defaults": {
+              "color": { "mode": "fixed", "fixedColor": "orange" },
+              "mappings": [],
+              "thresholds": { "mode": "absolute", "steps": [{ "color": "orange", "value": null }] },
+              "unit": "short"
+            }
+          },
+          "gridPos": { "h": 6, "w": 6, "x": 0, "y": 14 },
+          "id": 203,
+          "options": { "colorMode": "value", "graphMode": "area", "justifyMode": "auto", "orientation": "auto", "reduceOptions": { "calcs": ["mean"], "fields": "", "values": false }, "textMode": "value_and_name" },
+          "targets": [{ "expr": "histogram_quantile(0.5, sum(rate(robopd2_d2s_export_level_bucket[24h])) by (le))", "instant": true, "legendFormat": "Median Level", "refId": "A" }],
+          "title": "Median Export Level",
+          "type": "stat"
+        },
+        {
+          "datasource": "Prometheus",
+          "fieldConfig": {
+            "defaults": {
+              "color": { "mode": "palette-classic" },
+              "custom": { "axisCenteredZero": false, "axisPlacement": "auto", "drawStyle": "bars", "fillOpacity": 80, "lineWidth": 0, "pointSize": 5, "showPoints": "never", "stacking": { "mode": "none" } },
+              "mappings": [],
+              "thresholds": { "mode": "absolute", "steps": [{ "color": "green", "value": null }] },
+              "unit": "short"
+            }
+          },
+          "gridPos": { "h": 6, "w": 18, "x": 6, "y": 14 },
+          "id": 204,
+          "options": { "legend": { "calcs": [], "displayMode": "list", "placement": "bottom" }, "tooltip": { "mode": "single" } },
+          "targets": [{ "expr": "sum(increase(robopd2_d2s_export_level_bucket[7d])) by (le)", "legendFormat": "≤ Lv{{le}}", "refId": "A" }],
+          "title": "Level Distribution (7d)",
+          "type": "timeseries"
+        },
+        {
+          "collapsed": false,
+          "gridPos": { "h": 1, "w": 24, "x": 0, "y": 20 },
+          "id": 300,
+          "title": "Build Trends",
+          "type": "row"
+        },
+        {
+          "datasource": "Prometheus",
+          "fieldConfig": {
+            "defaults": {
+              "color": { "mode": "palette-classic" },
+              "mappings": [],
+              "thresholds": { "mode": "absolute", "steps": [{ "color": "green", "value": null }] },
+              "unit": "short"
+            }
+          },
+          "gridPos": { "h": 9, "w": 12, "x": 0, "y": 21 },
+          "id": 301,
+          "options": {
+            "displayMode": "basic",
+            "orientation": "horizontal",
+            "reduceOptions": { "calcs": ["lastNotNull"], "fields": "", "values": false },
+            "showUnfilled": true
+          },
+          "targets": [{ "expr": "topk(10, sum by(item_name) (robopd2_d2s_export_unique_item_total))", "instant": true, "legendFormat": "{{item_name}}", "refId": "A" }],
+          "title": "Top 10 Unique Items",
+          "type": "bargauge"
+        },
+        {
+          "datasource": "Prometheus",
+          "fieldConfig": {
+            "defaults": {
+              "color": { "mode": "palette-classic" },
+              "mappings": [],
+              "thresholds": { "mode": "absolute", "steps": [{ "color": "green", "value": null }] },
+              "unit": "short"
+            }
+          },
+          "gridPos": { "h": 9, "w": 12, "x": 12, "y": 21 },
+          "id": 302,
+          "options": {
+            "displayMode": "basic",
+            "orientation": "horizontal",
+            "reduceOptions": { "calcs": ["lastNotNull"], "fields": "", "values": false },
+            "showUnfilled": true
+          },
+          "targets": [{ "expr": "topk(10, sum by(item_name) (robopd2_d2s_export_runeword_total))", "instant": true, "legendFormat": "{{item_name}}", "refId": "A" }],
+          "title": "Top 10 Runewords",
+          "type": "bargauge"
+        },
+        {
+          "datasource": "Prometheus",
+          "fieldConfig": {
+            "defaults": {
+              "color": { "mode": "palette-classic" },
+              "mappings": [],
+              "thresholds": { "mode": "absolute", "steps": [{ "color": "green", "value": null }] },
+              "unit": "short"
+            }
+          },
+          "gridPos": { "h": 8, "w": 12, "x": 0, "y": 30 },
+          "id": 303,
+          "options": {
+            "displayMode": "basic",
+            "orientation": "horizontal",
+            "reduceOptions": { "calcs": ["lastNotNull"], "fields": "", "values": false },
+            "showUnfilled": true
+          },
+          "targets": [{ "expr": "topk(10, sum by(skill_name) (robopd2_d2s_export_skill_total))", "instant": true, "legendFormat": "{{skill_name}}", "refId": "A" }],
+          "title": "Most Popular Skills",
+          "type": "bargauge"
+        },
+        {
+          "datasource": "Prometheus",
+          "fieldConfig": {
+            "defaults": {
+              "color": { "mode": "palette-classic" },
+              "mappings": [],
+              "thresholds": { "mode": "absolute", "steps": [{ "color": "green", "value": null }] },
+              "unit": "percentunit"
+            }
+          },
+          "gridPos": { "h": 4, "w": 4, "x": 12, "y": 30 },
+          "id": 304,
+          "options": { "colorMode": "value", "graphMode": "area", "justifyMode": "auto", "orientation": "auto", "reduceOptions": { "calcs": ["lastNotNull"], "fields": "", "values": false }, "textMode": "value_and_name" },
+          "targets": [{ "expr": "sum(robopd2_d2s_export_has_corruption_total{has_corruption=\"True\"}) / sum(robopd2_d2s_export_has_corruption_total)", "instant": true, "legendFormat": "Corruption Rate", "refId": "A" }],
+          "title": "Corruption Rate",
+          "type": "stat"
+        },
+        {
+          "datasource": "Prometheus",
+          "fieldConfig": {
+            "defaults": {
+              "color": { "mode": "palette-classic" },
+              "custom": { "axisCenteredZero": false, "axisPlacement": "auto", "drawStyle": "line", "fillOpacity": 20, "lineWidth": 1, "pointSize": 5, "showPoints": "never", "stacking": { "mode": "none" } },
+              "mappings": [],
+              "thresholds": { "mode": "absolute", "steps": [{ "color": "green", "value": null }] },
+              "unit": "short"
+            }
+          },
+          "gridPos": { "h": 4, "w": 8, "x": 16, "y": 30 },
+          "id": 305,
+          "options": { "legend": { "calcs": ["mean"], "displayMode": "list", "placement": "bottom" }, "tooltip": { "mode": "single" } },
+          "targets": [
+            { "expr": "histogram_quantile(0.5, sum(rate(robopd2_d2s_export_charms_bucket{charm_type=\"cm1\"}[24h])) by (le))", "legendFormat": "Small", "refId": "A" },
+            { "expr": "histogram_quantile(0.5, sum(rate(robopd2_d2s_export_charms_bucket{charm_type=\"cm2\"}[24h])) by (le))", "legendFormat": "Large", "refId": "B" },
+            { "expr": "histogram_quantile(0.5, sum(rate(robopd2_d2s_export_charms_bucket{charm_type=\"cm3\"}[24h])) by (le))", "legendFormat": "Grand", "refId": "C" }
+          ],
+          "title": "Median Charms per Export",
+          "type": "timeseries"
+        },
+        {
+          "datasource": "Prometheus",
+          "fieldConfig": {
+            "defaults": {
+              "color": { "mode": "palette-classic" },
+              "mappings": [],
+              "thresholds": { "mode": "absolute", "steps": [{ "color": "green", "value": null }] },
+              "unit": "short"
+            }
+          },
+          "gridPos": { "h": 4, "w": 12, "x": 12, "y": 34 },
+          "id": 306,
+          "options": {
+            "displayMode": "basic",
+            "orientation": "horizontal",
+            "reduceOptions": { "calcs": ["lastNotNull"], "fields": "", "values": false },
+            "showUnfilled": true
+          },
+          "targets": [{ "expr": "topk(10, sum by(item_name) (robopd2_d2s_export_set_item_total))", "instant": true, "legendFormat": "{{item_name}}", "refId": "A" }],
+          "title": "Top Set Items",
+          "type": "bargauge"
+        },
+        {
+          "collapsed": false,
+          "gridPos": { "h": 1, "w": 24, "x": 0, "y": 38 },
+          "id": 400,
+          "title": "Community",
+          "type": "row"
+        },
+        {
+          "datasource": "Prometheus",
+          "fieldConfig": {
+            "defaults": {
+              "color": { "mode": "palette-classic" },
+              "custom": { "axisCenteredZero": false, "axisPlacement": "auto", "drawStyle": "bars", "fillOpacity": 50, "lineWidth": 1, "pointSize": 5, "showPoints": "never", "stacking": { "mode": "none" } },
+              "mappings": [],
+              "thresholds": { "mode": "absolute", "steps": [{ "color": "green", "value": null }] },
+              "unit": "short"
+            }
+          },
+          "gridPos": { "h": 7, "w": 8, "x": 0, "y": 39 },
+          "id": 401,
+          "options": { "legend": { "calcs": ["sum"], "displayMode": "list", "placement": "bottom" }, "tooltip": { "mode": "single" } },
+          "targets": [{ "expr": "increase(robopd2_shared_builds_created_total[1h])", "legendFormat": "Created", "refId": "A" }],
+          "title": "Shared Builds Created",
+          "type": "timeseries"
+        },
+        {
+          "datasource": "Prometheus",
+          "fieldConfig": {
+            "defaults": {
+              "color": { "mode": "palette-classic" },
+              "custom": { "axisCenteredZero": false, "axisPlacement": "auto", "drawStyle": "bars", "fillOpacity": 50, "lineWidth": 1, "pointSize": 5, "showPoints": "never", "stacking": { "mode": "none" } },
+              "mappings": [],
+              "thresholds": { "mode": "absolute", "steps": [{ "color": "green", "value": null }] },
+              "unit": "short"
+            }
+          },
+          "gridPos": { "h": 7, "w": 8, "x": 8, "y": 39 },
+          "id": 402,
+          "options": { "legend": { "calcs": ["sum"], "displayMode": "list", "placement": "bottom" }, "tooltip": { "mode": "single" } },
+          "targets": [{ "expr": "increase(robopd2_shared_builds_viewed_total[1h])", "legendFormat": "Views", "refId": "A" }],
+          "title": "Shared Build Views",
+          "type": "timeseries"
+        },
+        {
+          "datasource": "Prometheus",
+          "fieldConfig": {
+            "defaults": {
+              "color": { "mode": "palette-classic" },
+              "custom": { "axisCenteredZero": false, "axisPlacement": "auto", "drawStyle": "bars", "fillOpacity": 50, "lineWidth": 1, "pointSize": 5, "showPoints": "never", "stacking": { "mode": "normal" } },
+              "mappings": [],
+              "thresholds": { "mode": "absolute", "steps": [{ "color": "green", "value": null }] },
+              "unit": "short"
+            }
+          },
+          "gridPos": { "h": 7, "w": 8, "x": 16, "y": 39 },
+          "id": 403,
+          "options": { "legend": { "calcs": ["sum"], "displayMode": "list", "placement": "bottom" }, "tooltip": { "mode": "single" } },
+          "targets": [
+            { "expr": "sum by(class_id) (increase(robopd2_pd2_import_class_total[1h]))", "legendFormat": "{{class_id}}", "refId": "A" }
+          ],
+          "title": "PD2 Ladder Imports",
+          "type": "timeseries"
+        },
+        {
+          "collapsed": false,
+          "gridPos": { "h": 1, "w": 24, "x": 0, "y": 46 },
+          "id": 500,
+          "title": "Engagement",
+          "type": "row"
+        },
+        {
+          "datasource": "Prometheus",
+          "fieldConfig": {
+            "defaults": {
+              "color": { "mode": "palette-classic" },
+              "custom": { "axisCenteredZero": false, "axisPlacement": "auto", "drawStyle": "bars", "fillOpacity": 50, "lineWidth": 1, "pointSize": 5, "showPoints": "never", "stacking": { "mode": "normal" } },
+              "mappings": [],
+              "thresholds": { "mode": "absolute", "steps": [{ "color": "green", "value": null }] },
+              "unit": "short"
+            }
+          },
+          "gridPos": { "h": 7, "w": 8, "x": 0, "y": 47 },
+          "id": 501,
+          "options": { "legend": { "calcs": ["sum"], "displayMode": "list", "placement": "bottom" }, "tooltip": { "mode": "single" } },
+          "targets": [{ "expr": "sum by(category) (increase(robopd2_item_browse_total[1h]))", "legendFormat": "{{category}}", "refId": "A" }],
+          "title": "Browsing Activity",
+          "type": "timeseries"
+        },
+        {
+          "datasource": "Prometheus",
+          "fieldConfig": {
+            "defaults": {
+              "color": { "mode": "palette-classic" },
+              "mappings": [],
+              "thresholds": { "mode": "absolute", "steps": [{ "color": "green", "value": null }] },
+              "unit": "percentunit"
+            }
+          },
+          "gridPos": { "h": 7, "w": 4, "x": 8, "y": 47 },
+          "id": 502,
+          "options": { "colorMode": "value", "graphMode": "area", "justifyMode": "auto", "orientation": "auto", "reduceOptions": { "calcs": ["lastNotNull"], "fields": "", "values": false }, "textMode": "value_and_name" },
+          "targets": [{ "expr": "sum(robopd2_d2s_exports_total{success=\"True\"}) / sum(robopd2_d2s_exports_total)", "instant": true, "legendFormat": "Success Rate", "refId": "A" }],
+          "title": "Export Success Rate",
+          "type": "stat"
+        },
+        {
+          "datasource": "Prometheus",
+          "fieldConfig": {
+            "defaults": {
+              "color": { "mode": "palette-classic" },
+              "custom": { "axisCenteredZero": false, "axisPlacement": "auto", "drawStyle": "line", "fillOpacity": 10, "lineWidth": 1, "pointSize": 5, "showPoints": "never", "stacking": { "mode": "none" } },
+              "mappings": [],
+              "thresholds": { "mode": "absolute", "steps": [{ "color": "green", "value": null }, { "color": "red", "value": 2 }] },
+              "unit": "s"
+            }
+          },
+          "gridPos": { "h": 7, "w": 6, "x": 12, "y": 47 },
+          "id": 503,
+          "options": { "legend": { "calcs": ["mean", "max"], "displayMode": "list", "placement": "bottom" }, "tooltip": { "mode": "single" } },
+          "targets": [{ "expr": "histogram_quantile(0.95, sum(rate(robopd2_d2s_export_duration_seconds_bucket[5m])) by (le))", "legendFormat": "p95", "refId": "A" }],
+          "title": "Export Duration (p95)",
+          "type": "timeseries"
+        },
+        {
+          "datasource": "Prometheus",
+          "fieldConfig": {
+            "defaults": {
+              "color": { "mode": "palette-classic" },
+              "custom": { "axisCenteredZero": false, "axisPlacement": "auto", "drawStyle": "line", "fillOpacity": 10, "lineWidth": 1, "pointSize": 5, "showPoints": "never", "stacking": { "mode": "none" } },
+              "mappings": [],
+              "thresholds": { "mode": "absolute", "steps": [{ "color": "green", "value": null }] },
+              "unit": "short"
+            }
+          },
+          "gridPos": { "h": 7, "w": 6, "x": 18, "y": 47 },
+          "id": 504,
+          "options": { "legend": { "calcs": [], "displayMode": "list", "placement": "bottom" }, "tooltip": { "mode": "single" } },
+          "targets": [{ "expr": "sum(http_requests_in_progress{job=\"robopd2-do-api\"})", "legendFormat": "In Progress", "refId": "A" }],
+          "title": "Active Requests",
+          "type": "timeseries"
+        }
+      ],
+      "refresh": "30s",
+      "schemaVersion": 39,
+      "tags": ["robopd2", "activity"],
+      "templating": { "list": [] },
+      "time": { "from": "now-24h", "to": "now" },
+      "timepicker": {},
+      "timezone": "browser",
+      "title": "RoboPD2 Planner Activity",
+      "uid": "robopd2-activity",
+      "version": 1
+    }

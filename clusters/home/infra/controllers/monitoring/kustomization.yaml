@@ -14,3 +14,4 @@ resources:
   - dashboards/robopd2-dashboard.yaml
   - dashboards/robopd2-obs-dashboard.yaml
   - dashboards/robopd2-infra-dashboard.yaml
+  - dashboards/robopd2-activity-dashboard.yaml
