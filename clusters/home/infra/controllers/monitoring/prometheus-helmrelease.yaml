@@ -127,6 +127,9 @@ spec:
           serve_from_sub_path: true
           domain: ""  # Don't enforce specific domain
           enforce_domain: false
+        security:
+          # Prevent sidecar auth failures from cascading into lockout
+          disable_brute_force_login_protection: true
       # Enable persistent storage for Grafana
       persistence:
         enabled: true
