@@ -2,5 +2,6 @@ apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
 resources:
   - ./github-runners
-  - ./route53-ddns
+  # route53-ddns removed — DNS now managed by Terraform in robopd2-infra
+  # - ./route53-ddns
   - ./robopd2
