@@ -36,7 +36,7 @@ data:
           "gridPos": { "h": 4, "w": 6, "x": 0, "y": 1 },
           "id": 101,
           "options": { "colorMode": "background", "graphMode": "none", "justifyMode": "center", "orientation": "auto", "reduceOptions": { "calcs": ["lastNotNull"], "fields": "", "values": false }, "textMode": "value_and_name" },
-          "targets": [{ "expr": "sum(robopd2_d2s_exports_total{success=\"True\"})", "instant": true, "legendFormat": "", "refId": "A" }],
+          "targets": [{ "expr": "sum(robopd2_d2s_exports_total{job=\"robopd2-do-api\", success=\"True\"})", "instant": true, "legendFormat": "", "refId": "A" }],
           "title": "Total Characters Exported",
           "type": "stat"
         },
@@ -53,7 +53,7 @@ data:
           "gridPos": { "h": 4, "w": 6, "x": 6, "y": 1 },
           "id": 102,
           "options": { "colorMode": "background", "graphMode": "none", "justifyMode": "center", "orientation": "auto", "reduceOptions": { "calcs": ["lastNotNull"], "fields": "", "values": false }, "textMode": "value_and_name" },
-          "targets": [{ "expr": "sum(robopd2_shared_builds_created_total)", "instant": true, "legendFormat": "", "refId": "A" }],
+          "targets": [{ "expr": "sum(robopd2_shared_builds_created_total{job=\"robopd2-do-api\"})", "instant": true, "legendFormat": "", "refId": "A" }],
           "title": "Total Builds Shared",
           "type": "stat"
         },
@@ -70,7 +70,7 @@ data:
           "gridPos": { "h": 4, "w": 6, "x": 12, "y": 1 },
           "id": 103,
           "options": { "colorMode": "background", "graphMode": "none", "justifyMode": "center", "orientation": "auto", "reduceOptions": { "calcs": ["lastNotNull"], "fields": "", "values": false }, "textMode": "value_and_name" },
-          "targets": [{ "expr": "topk(1, sum by(class_id) (increase(robopd2_d2s_exports_total{success=\"True\"}[24h])))", "instant": true, "legendFormat": "{{class_id}}", "refId": "A" }],
+          "targets": [{ "expr": "topk(1, sum by(class_id) (increase(robopd2_d2s_exports_total{job=\"robopd2-do-api\", success=\"True\"}[24h])))", "instant": true, "legendFormat": "{{class_id}}", "refId": "A" }],
           "title": "Most Exported Class Today",
           "type": "stat"
         },
@@ -87,7 +87,7 @@ data:
           "gridPos": { "h": 4, "w": 6, "x": 18, "y": 1 },
           "id": 104,
           "options": { "colorMode": "background", "graphMode": "none", "justifyMode": "center", "orientation": "auto", "reduceOptions": { "calcs": ["lastNotNull"], "fields": "", "values": false }, "textMode": "value_and_name" },
-          "targets": [{ "expr": "bottomk(1, sum by(item_name) (robopd2_d2s_export_unique_item_total))", "instant": true, "legendFormat": "{{item_name}}", "refId": "A" }],
+          "targets": [{ "expr": "bottomk(1, sum by(item_name) (robopd2_d2s_export_unique_item_total{job=\"robopd2-do-api\"}))", "instant": true, "legendFormat": "{{item_name}}", "refId": "A" }],
           "title": "Rarest Unique Equipped",
           "type": "stat"
         },
@@ -116,7 +116,7 @@ data:
             "reduceOptions": { "calcs": ["lastNotNull"], "fields": "", "values": false },
             "tooltip": { "mode": "single" }
           },
-          "targets": [{ "expr": "sum by(class_id) (robopd2_d2s_exports_total{success=\"True\"})", "instant": true, "legendFormat": "{{class_id}}", "refId": "A" }],
+          "targets": [{ "expr": "sum by(class_id) (robopd2_d2s_exports_total{job=\"robopd2-do-api\", success=\"True\"})", "instant": true, "legendFormat": "{{class_id}}", "refId": "A" }],
           "title": "Class Popularity (All Time)",
           "type": "piechart"
         },
@@ -134,7 +134,7 @@ data:
           "gridPos": { "h": 8, "w": 16, "x": 8, "y": 6 },
           "id": 202,
           "options": { "legend": { "calcs": ["sum"], "displayMode": "list", "placement": "bottom" }, "tooltip": { "mode": "single" } },
-          "targets": [{ "expr": "sum by(class_id) (increase(robopd2_d2s_exports_total{success=\"True\"}[1h]))", "legendFormat": "{{class_id}}", "refId": "A" }],
+          "targets": [{ "expr": "sum by(class_id) (increase(robopd2_d2s_exports_total{job=\"robopd2-do-api\", success=\"True\"}[1h]))", "legendFormat": "{{class_id}}", "refId": "A" }],
           "title": "Exports Over Time (by class)",
           "type": "timeseries"
         },
@@ -151,7 +151,7 @@ data:
           "gridPos": { "h": 6, "w": 6, "x": 0, "y": 14 },
           "id": 203,
           "options": { "colorMode": "value", "graphMode": "area", "justifyMode": "auto", "orientation": "auto", "reduceOptions": { "calcs": ["mean"], "fields": "", "values": false }, "textMode": "value_and_name" },
-          "targets": [{ "expr": "histogram_quantile(0.5, sum(rate(robopd2_d2s_export_level_bucket[24h])) by (le))", "instant": true, "legendFormat": "Median Level", "refId": "A" }],
+          "targets": [{ "expr": "histogram_quantile(0.5, sum(rate(robopd2_d2s_export_level_bucket{job=\"robopd2-do-api\"}[24h])) by (le))", "instant": true, "legendFormat": "Median Level", "refId": "A" }],
           "title": "Median Export Level",
           "type": "stat"
         },
@@ -169,7 +169,7 @@ data:
           "gridPos": { "h": 6, "w": 18, "x": 6, "y": 14 },
           "id": 204,
           "options": { "legend": { "calcs": [], "displayMode": "list", "placement": "bottom" }, "tooltip": { "mode": "single" } },
-          "targets": [{ "expr": "sum(increase(robopd2_d2s_export_level_bucket[7d])) by (le)", "legendFormat": "≤ Lv{{le}}", "refId": "A" }],
+          "targets": [{ "expr": "sum(increase(robopd2_d2s_export_level_bucket{job=\"robopd2-do-api\"}[7d])) by (le)", "legendFormat": "≤ Lv{{le}}", "refId": "A" }],
           "title": "Level Distribution (7d)",
           "type": "timeseries"
         },
@@ -198,7 +198,7 @@ data:
             "reduceOptions": { "calcs": ["lastNotNull"], "fields": "", "values": false },
             "showUnfilled": true
           },
-          "targets": [{ "expr": "topk(10, sum by(item_name) (robopd2_d2s_export_unique_item_total))", "instant": true, "legendFormat": "{{item_name}}", "refId": "A" }],
+          "targets": [{ "expr": "topk(10, sum by(item_name) (robopd2_d2s_export_unique_item_total{job=\"robopd2-do-api\"}))", "instant": true, "legendFormat": "{{item_name}}", "refId": "A" }],
           "title": "Top 10 Unique Items",
           "type": "bargauge"
         },
@@ -220,7 +220,7 @@ data:
             "reduceOptions": { "calcs": ["lastNotNull"], "fields": "", "values": false },
             "showUnfilled": true
           },
-          "targets": [{ "expr": "topk(10, sum by(item_name) (robopd2_d2s_export_runeword_total))", "instant": true, "legendFormat": "{{item_name}}", "refId": "A" }],
+          "targets": [{ "expr": "topk(10, sum by(item_name) (robopd2_d2s_export_runeword_total{job=\"robopd2-do-api\"}))", "instant": true, "legendFormat": "{{item_name}}", "refId": "A" }],
           "title": "Top 10 Runewords",
           "type": "bargauge"
         },
@@ -242,7 +242,7 @@ data:
             "reduceOptions": { "calcs": ["lastNotNull"], "fields": "", "values": false },
             "showUnfilled": true
           },
-          "targets": [{ "expr": "topk(10, sum by(skill_name) (robopd2_d2s_export_skill_total))", "instant": true, "legendFormat": "{{skill_name}}", "refId": "A" }],
+          "targets": [{ "expr": "topk(10, sum by(skill_name) (robopd2_d2s_export_skill_total{job=\"robopd2-do-api\"}))", "instant": true, "legendFormat": "{{skill_name}}", "refId": "A" }],
           "title": "Most Popular Skills",
           "type": "bargauge"
         },
@@ -259,7 +259,7 @@ data:
           "gridPos": { "h": 4, "w": 4, "x": 12, "y": 30 },
           "id": 304,
           "options": { "colorMode": "value", "graphMode": "area", "justifyMode": "auto", "orientation": "auto", "reduceOptions": { "calcs": ["lastNotNull"], "fields": "", "values": false }, "textMode": "value_and_name" },
-          "targets": [{ "expr": "sum(robopd2_d2s_export_has_corruption_total{has_corruption=\"True\"}) / sum(robopd2_d2s_export_has_corruption_total)", "instant": true, "legendFormat": "Corruption Rate", "refId": "A" }],
+          "targets": [{ "expr": "sum(robopd2_d2s_export_has_corruption_total{job=\"robopd2-do-api\", has_corruption=\"True\"}) / sum(robopd2_d2s_export_has_corruption_total{job=\"robopd2-do-api\"})", "instant": true, "legendFormat": "Corruption Rate", "refId": "A" }],
           "title": "Corruption Rate",
           "type": "stat"
         },
@@ -278,9 +278,9 @@ data:
           "id": 305,
           "options": { "legend": { "calcs": ["mean"], "displayMode": "list", "placement": "bottom" }, "tooltip": { "mode": "single" } },
           "targets": [
-            { "expr": "histogram_quantile(0.5, sum(rate(robopd2_d2s_export_charms_bucket{charm_type=\"cm1\"}[24h])) by (le))", "legendFormat": "Small", "refId": "A" },
-            { "expr": "histogram_quantile(0.5, sum(rate(robopd2_d2s_export_charms_bucket{charm_type=\"cm2\"}[24h])) by (le))", "legendFormat": "Large", "refId": "B" },
-            { "expr": "histogram_quantile(0.5, sum(rate(robopd2_d2s_export_charms_bucket{charm_type=\"cm3\"}[24h])) by (le))", "legendFormat": "Grand", "refId": "C" }
+            { "expr": "histogram_quantile(0.5, sum(rate(robopd2_d2s_export_charms_bucket{job=\"robopd2-do-api\", charm_type=\"cm1\"}[24h])) by (le))", "legendFormat": "Small", "refId": "A" },
+            { "expr": "histogram_quantile(0.5, sum(rate(robopd2_d2s_export_charms_bucket{job=\"robopd2-do-api\", charm_type=\"cm2\"}[24h])) by (le))", "legendFormat": "Large", "refId": "B" },
+            { "expr": "histogram_quantile(0.5, sum(rate(robopd2_d2s_export_charms_bucket{job=\"robopd2-do-api\", charm_type=\"cm3\"}[24h])) by (le))", "legendFormat": "Grand", "refId": "C" }
           ],
           "title": "Median Charms per Export",
           "type": "timeseries"
@@ -303,7 +303,7 @@ data:
             "reduceOptions": { "calcs": ["lastNotNull"], "fields": "", "values": false },
             "showUnfilled": true
           },
-          "targets": [{ "expr": "topk(10, sum by(item_name) (robopd2_d2s_export_set_item_total))", "instant": true, "legendFormat": "{{item_name}}", "refId": "A" }],
+          "targets": [{ "expr": "topk(10, sum by(item_name) (robopd2_d2s_export_set_item_total{job=\"robopd2-do-api\"}))", "instant": true, "legendFormat": "{{item_name}}", "refId": "A" }],
           "title": "Top Set Items",
           "type": "bargauge"
         },
@@ -328,7 +328,7 @@ data:
           "gridPos": { "h": 7, "w": 8, "x": 0, "y": 39 },
           "id": 401,
           "options": { "legend": { "calcs": ["sum"], "displayMode": "list", "placement": "bottom" }, "tooltip": { "mode": "single" } },
-          "targets": [{ "expr": "increase(robopd2_shared_builds_created_total[1h])", "legendFormat": "Created", "refId": "A" }],
+          "targets": [{ "expr": "increase(robopd2_shared_builds_created_total{job=\"robopd2-do-api\"}[1h])", "legendFormat": "Created", "refId": "A" }],
           "title": "Shared Builds Created",
           "type": "timeseries"
         },
@@ -346,7 +346,7 @@ data:
           "gridPos": { "h": 7, "w": 8, "x": 8, "y": 39 },
           "id": 402,
           "options": { "legend": { "calcs": ["sum"], "displayMode": "list", "placement": "bottom" }, "tooltip": { "mode": "single" } },
-          "targets": [{ "expr": "increase(robopd2_shared_builds_viewed_total[1h])", "legendFormat": "Views", "refId": "A" }],
+          "targets": [{ "expr": "increase(robopd2_shared_builds_viewed_total{job=\"robopd2-do-api\"}[1h])", "legendFormat": "Views", "refId": "A" }],
           "title": "Shared Build Views",
           "type": "timeseries"
         },
@@ -365,7 +365,7 @@ data:
           "id": 403,
           "options": { "legend": { "calcs": ["sum"], "displayMode": "list", "placement": "bottom" }, "tooltip": { "mode": "single" } },
           "targets": [
-            { "expr": "sum by(class_id) (increase(robopd2_pd2_import_class_total[1h]))", "legendFormat": "{{class_id}}", "refId": "A" }
+            { "expr": "sum by(class_id) (increase(robopd2_pd2_import_class_total{job=\"robopd2-do-api\"}[1h]))", "legendFormat": "{{class_id}}", "refId": "A" }
           ],
           "title": "PD2 Ladder Imports",
           "type": "timeseries"
@@ -391,7 +391,7 @@ data:
           "gridPos": { "h": 7, "w": 8, "x": 0, "y": 47 },
           "id": 501,
           "options": { "legend": { "calcs": ["sum"], "displayMode": "list", "placement": "bottom" }, "tooltip": { "mode": "single" } },
-          "targets": [{ "expr": "sum by(category) (increase(robopd2_item_browse_total[1h]))", "legendFormat": "{{category}}", "refId": "A" }],
+          "targets": [{ "expr": "sum by(category) (increase(robopd2_item_browse_total{job=\"robopd2-do-api\"}[1h]))", "legendFormat": "{{category}}", "refId": "A" }],
           "title": "Browsing Activity",
           "type": "timeseries"
         },
@@ -408,7 +408,7 @@ data:
           "gridPos": { "h": 7, "w": 4, "x": 8, "y": 47 },
           "id": 502,
           "options": { "colorMode": "value", "graphMode": "area", "justifyMode": "auto", "orientation": "auto", "reduceOptions": { "calcs": ["lastNotNull"], "fields": "", "values": false }, "textMode": "value_and_name" },
-          "targets": [{ "expr": "sum(robopd2_d2s_exports_total{success=\"True\"}) / sum(robopd2_d2s_exports_total)", "instant": true, "legendFormat": "Success Rate", "refId": "A" }],
+          "targets": [{ "expr": "sum(robopd2_d2s_exports_total{job=\"robopd2-do-api\", success=\"True\"}) / sum(robopd2_d2s_exports_total{job=\"robopd2-do-api\"})", "instant": true, "legendFormat": "Success Rate", "refId": "A" }],
           "title": "Export Success Rate",
           "type": "stat"
         },
@@ -426,7 +426,7 @@ data:
           "gridPos": { "h": 7, "w": 6, "x": 12, "y": 47 },
           "id": 503,
           "options": { "legend": { "calcs": ["mean", "max"], "displayMode": "list", "placement": "bottom" }, "tooltip": { "mode": "single" } },
-          "targets": [{ "expr": "histogram_quantile(0.95, sum(rate(robopd2_d2s_export_duration_seconds_bucket[5m])) by (le))", "legendFormat": "p95", "refId": "A" }],
+          "targets": [{ "expr": "histogram_quantile(0.95, sum(rate(robopd2_d2s_export_duration_seconds_bucket{job=\"robopd2-do-api\"}[5m])) by (le))", "legendFormat": "p95", "refId": "A" }],
           "title": "Export Duration (p95)",
           "type": "timeseries"
         },
