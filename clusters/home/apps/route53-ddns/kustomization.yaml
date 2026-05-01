@@ -5,4 +5,5 @@ resources:
   - route53-secret.yaml
   - configmap.yaml
   - cronjob.yaml
-  - cronjob-2.yaml
+  # cronjob-2.yaml (robopd2.com) intentionally excluded —
+  # robopd2.com is managed by Terraform in robopd2-infra.
