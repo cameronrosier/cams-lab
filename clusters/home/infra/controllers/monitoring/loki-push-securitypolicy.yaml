@@ -1,0 +1,46 @@
+---
+# HTTPRoute for Loki push-only path. Separate from /lab/loki query route
+# so we can require basic auth here without breaking the existing path.
+apiVersion: gateway.networking.k8s.io/v1
+kind: HTTPRoute
+metadata:
+  name: loki-push
+  namespace: monitoring
+spec:
+  parentRefs:
+    - name: home-gateway
+      namespace: default
+      sectionName: https
+  hostnames:
+    - "cameronrosier.com"
+    - "www.cameronrosier.com"
+  rules:
+    - matches:
+        - path:
+            type: PathPrefix
+            value: /lab/loki-push
+      filters:
+        - type: URLRewrite
+          urlRewrite:
+            path:
+              type: ReplacePrefixMatch
+              replacePrefixMatch: /loki/api/v1/push
+      backendRefs:
+        - name: loki-stack
+          port: 3100
+---
+# Require HTTP basic auth on the push route. Credentials live in
+# loki-push-basic-auth secret (htpasswd format), SOPS-encrypted in git.
+apiVersion: gateway.envoyproxy.io/v1alpha1
+kind: SecurityPolicy
+metadata:
+  name: loki-push-auth
+  namespace: monitoring
+spec:
+  targetRefs:
+    - group: gateway.networking.k8s.io
+      kind: HTTPRoute
+      name: loki-push
+  basicAuth:
+    users:
+      name: loki-push-basic-auth

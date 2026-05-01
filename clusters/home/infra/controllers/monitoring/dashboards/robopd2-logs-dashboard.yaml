@@ -1,0 +1,141 @@
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: grafana-dashboard-robopd2-logs
+  namespace: monitoring
+  labels:
+    grafana_dashboard: "1"
+data:
+  robopd2-logs.json: |
+    {
+      "annotations": {"list": []},
+      "description": "RoboPD2 application logs (Loki)",
+      "editable": true,
+      "graphTooltip": 0,
+      "id": null,
+      "links": [],
+      "tags": ["robopd2", "logs"],
+      "templating": {
+        "list": [
+          {
+            "name": "service",
+            "type": "query",
+            "datasource": "Loki",
+            "query": "label_values(service)",
+            "refresh": 2,
+            "current": {"text": "robopd2-api", "value": "robopd2-api"},
+            "includeAll": false,
+            "multi": false
+          },
+          {
+            "name": "level",
+            "type": "custom",
+            "query": "All,DEBUG,INFO,WARNING,ERROR,CRITICAL",
+            "current": {"text": "All", "value": "All"},
+            "options": [
+              {"text": "All", "value": "All", "selected": true},
+              {"text": "DEBUG", "value": "DEBUG"},
+              {"text": "INFO", "value": "INFO"},
+              {"text": "WARNING", "value": "WARNING"},
+              {"text": "ERROR", "value": "ERROR"},
+              {"text": "CRITICAL", "value": "CRITICAL"}
+            ],
+            "includeAll": true,
+            "multi": false
+          },
+          {
+            "name": "search",
+            "type": "textbox",
+            "label": "Search",
+            "current": {"text": "", "value": ""}
+          }
+        ]
+      },
+      "panels": [
+        {
+          "type": "timeseries",
+          "title": "Log volume by level",
+          "datasource": "Loki",
+          "gridPos": {"h": 7, "w": 16, "x": 0, "y": 0},
+          "id": 1,
+          "options": {
+            "legend": {"displayMode": "table", "placement": "right", "calcs": ["sum"]}
+          },
+          "fieldConfig": {
+            "defaults": {
+              "custom": {"drawStyle": "bars", "stacking": {"mode": "normal"}, "fillOpacity": 80, "lineWidth": 0},
+              "color": {"mode": "palette-classic"}
+            }
+          },
+          "targets": [
+            {
+              "expr": "sum by (level) (count_over_time({service=~\"$service\"} [$__interval]))",
+              "legendFormat": "{{level}}",
+              "refId": "A"
+            }
+          ]
+        },
+        {
+          "type": "stat",
+          "title": "Errors (last 1h)",
+          "datasource": "Loki",
+          "gridPos": {"h": 7, "w": 8, "x": 16, "y": 0},
+          "id": 2,
+          "options": {
+            "colorMode": "background",
+            "graphMode": "area",
+            "reduceOptions": {"calcs": ["lastNotNull"], "fields": ""}
+          },
+          "fieldConfig": {
+            "defaults": {
+              "color": {"mode": "thresholds"},
+              "thresholds": {
+                "mode": "absolute",
+                "steps": [
+                  {"color": "green", "value": null},
+                  {"color": "yellow", "value": 1},
+                  {"color": "red", "value": 10}
+                ]
+              },
+              "unit": "short"
+            }
+          },
+          "targets": [
+            {
+              "expr": "sum(count_over_time({service=~\"$service\", level=~\"ERROR|CRITICAL|error|critical\"} [1h]))",
+              "instant": true,
+              "refId": "A"
+            }
+          ]
+        },
+        {
+          "type": "logs",
+          "title": "Live logs",
+          "datasource": "Loki",
+          "gridPos": {"h": 18, "w": 24, "x": 0, "y": 7},
+          "id": 3,
+          "options": {
+            "showLabels": false,
+            "showTime": true,
+            "wrapLogMessage": true,
+            "sortOrder": "Descending",
+            "dedupStrategy": "none",
+            "enableLogDetails": true,
+            "prettifyLogMessage": true
+          },
+          "targets": [
+            {
+              "expr": "{service=~\"$service\"} |~ \"(?i)$search\"",
+              "refId": "A"
+            }
+          ]
+        }
+      ],
+      "schemaVersion": 38,
+      "time": {"from": "now-1h", "to": "now"},
+      "refresh": "30s",
+      "title": "RoboPD2 Logs",
+      "uid": "robopd2-logs",
+      "version": 1
+    }
