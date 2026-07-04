@@ -26,7 +26,7 @@ spec:
               name: postgres-credentials
               key: password
         - name: DATABASE_URL
-          value: "postgresql://robopd2:$(POSTGRES_PASSWORD)@postgresql.robopd2.svc.cluster.local:5432/robopd2"
+          value: "postgresql://robopd2:$(POSTGRES_PASSWORD)@robopd2-infra-postgresql.robopd2.svc.cluster.local:5432/robopd2"
       containers:
       - name: api
         image: docker.io/robopd2/robopd2-api:main-20260507162927 # {"$imagepolicy": "robopd2:robopd2-api"}
@@ -42,7 +42,7 @@ spec:
               name: postgres-credentials
               key: password
         - name: DATABASE_URL
-          value: "postgresql://robopd2:$(POSTGRES_PASSWORD)@postgresql.robopd2.svc.cluster.local:5432/robopd2"
+          value: "postgresql://robopd2:$(POSTGRES_PASSWORD)@robopd2-infra-postgresql.robopd2.svc.cluster.local:5432/robopd2"
         - name: API_AUTH_USERNAME
           valueFrom:
             secretKeyRef:
