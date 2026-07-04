@@ -43,6 +43,8 @@ spec:
               key: password
         - name: DATABASE_URL
           value: "postgresql://robopd2:$(POSTGRES_PASSWORD)@robopd2-infra-postgresql.robopd2.svc.cluster.local:5432/robopd2"
+        - name: D2S_SHADOW_DIFF
+          value: "true"
         - name: API_AUTH_USERNAME
           valueFrom:
             secretKeyRef:
