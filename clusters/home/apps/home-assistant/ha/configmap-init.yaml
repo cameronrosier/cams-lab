@@ -1,0 +1,30 @@
+# Seeds HA config with the reverse-proxy http block on first boot.
+# HA never rewrites an existing configuration.yaml (UI edits go to .storage/),
+# so this is safe to run every start.
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: ha-config-seed
+  namespace: home-assistant
+data:
+  seed.sh: |
+    #!/bin/sh
+    set -e
+    if [ ! -f /config/configuration.yaml ]; then
+      cat > /config/configuration.yaml <<'EOF'
+    default_config:
+
+    automation: !include automations.yaml
+    script: !include scripts.yaml
+    scene: !include scenes.yaml
+
+    # Behind Envoy Gateway; without this HA 400s any request carrying X-Forwarded-For
+    http:
+      use_x_forwarded_for: true
+      trusted_proxies:
+        - 10.42.0.0/16
+    EOF
+      touch /config/automations.yaml /config/scripts.yaml /config/scenes.yaml
+    elif ! grep -q trusted_proxies /config/configuration.yaml; then
+      printf '\nhttp:\n  use_x_forwarded_for: true\n  trusted_proxies:\n    - 10.42.0.0/16\n' >> /config/configuration.yaml
+    fi

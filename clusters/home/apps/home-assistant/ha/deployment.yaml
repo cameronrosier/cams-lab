@@ -1,0 +1,81 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: home-assistant
+  namespace: home-assistant
+spec:
+  replicas: 1
+  strategy:
+    type: Recreate # RWO local-path PVC + SQLite recorder — never run two writers
+  selector:
+    matchLabels:
+      app: home-assistant
+  template:
+    metadata:
+      labels:
+        app: home-assistant
+    spec:
+      initContainers:
+        - name: seed-config
+          image: busybox:1.37
+          command: ["/bin/sh", "/seed/seed.sh"]
+          volumeMounts:
+            - name: config
+              mountPath: /config
+            - name: seed
+              mountPath: /seed
+      containers:
+        # Pinned version — HA monthly releases run recorder DB migrations; bump manually
+        - name: home-assistant
+          image: ghcr.io/home-assistant/home-assistant:2026.7.1
+          env:
+            - name: TZ
+              value: America/New_York
+          ports:
+            - name: http
+              containerPort: 8123
+          volumeMounts:
+            - name: config
+              mountPath: /config
+          resources:
+            requests:
+              cpu: 250m
+              memory: 512Mi
+            limits:
+              cpu: "1"
+              memory: 1536Mi
+          # First boot on a Pi can take a few minutes
+          startupProbe:
+            httpGet:
+              path: /
+              port: 8123
+            failureThreshold: 30
+            periodSeconds: 10
+          livenessProbe:
+            httpGet:
+              path: /
+              port: 8123
+            periodSeconds: 30
+          # No securityContext: image must start as root (s6-overlay drops privileges itself)
+        # go2rtc sidecar: eufy_security integration pushes P2P streams to 127.0.0.1:1984/8554
+        - name: go2rtc
+          image: alexxit/go2rtc:1.9.14
+          volumeMounts:
+            - name: config
+              mountPath: /config
+              subPath: go2rtc
+          resources:
+            requests:
+              cpu: 50m
+              memory: 64Mi
+            limits:
+              cpu: 500m
+              memory: 256Mi
+      volumes:
+        - name: config
+          persistentVolumeClaim:
+            claimName: home-assistant-config
+        - name: seed
+          configMap:
+            name: ha-config-seed
+            defaultMode: 0755

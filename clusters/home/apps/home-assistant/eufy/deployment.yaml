@@ -1,0 +1,63 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: eufy-security-ws
+  namespace: home-assistant
+spec:
+  replicas: 1
+  strategy:
+    type: Recreate # RWO PVC holds cloud session tokens
+  selector:
+    matchLabels:
+      app: eufy-security-ws
+  template:
+    metadata:
+      labels:
+        app: eufy-security-ws
+    spec:
+      # hostNetwork: LAN UDP broadcast discovery of the HomeBase + direct local P2P
+      # (binds :3000 on the node — LAN-only, router only forwards 80/443)
+      hostNetwork: true
+      dnsPolicy: ClusterFirstWithHostNet
+      containers:
+        - name: eufy-security-ws
+          image: bropat/eufy-security-ws:3.1.0
+          ports:
+            - containerPort: 3000
+          env:
+            - name: PORT
+              value: "3000"
+            - name: USERNAME
+              valueFrom:
+                secretKeyRef:
+                  name: eufy-credentials
+                  key: USERNAME
+            - name: PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: eufy-credentials
+                  key: PASSWORD
+            - name: COUNTRY
+              valueFrom:
+                secretKeyRef:
+                  name: eufy-credentials
+                  key: COUNTRY
+            - name: TRUSTED_DEVICE_NAME
+              value: eufyws-k3s
+            - name: POLLING_INTERVAL_MINUTES
+              value: "10"
+          volumeMounts:
+            # Persisted tokens prevent captcha/2FA re-auth loops on restart
+            - name: data
+              mountPath: /data
+          resources:
+            requests:
+              cpu: 50m
+              memory: 128Mi
+            limits:
+              cpu: 500m
+              memory: 512Mi
+      volumes:
+        - name: data
+          persistentVolumeClaim:
+            claimName: eufy-ws-data

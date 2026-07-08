@@ -6,3 +6,5 @@ resources:
   # robopd2.com is managed by Terraform in robopd2-infra (DO droplet).
   - ./route53-ddns
   - ./robopd2
+  # HomeAssistant @ home.cameronrosier.com (CNAME → apex, wildcard cert)
+  - ./home-assistant
