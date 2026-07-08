@@ -1,0 +1,22 @@
+# HomeAssistant at home.cameronrosier.com via the shared home-gateway.
+# TLS: covered by the *.cameronrosier.com wildcard cert already on the gateway.
+apiVersion: gateway.networking.k8s.io/v1
+kind: HTTPRoute
+metadata:
+  name: home-assistant
+  namespace: home-assistant
+spec:
+  parentRefs:
+    - name: home-gateway
+      namespace: default
+      sectionName: https
+  hostnames:
+    - "home.cameronrosier.com"
+  rules:
+    - matches:
+        - path:
+            type: PathPrefix
+            value: /
+      backendRefs:
+        - name: home-assistant
+          port: 8123

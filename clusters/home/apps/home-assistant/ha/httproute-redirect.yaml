@@ -1,0 +1,19 @@
+# HTTP → HTTPS redirect for home.cameronrosier.com
+apiVersion: gateway.networking.k8s.io/v1
+kind: HTTPRoute
+metadata:
+  name: home-assistant-http-redirect
+  namespace: home-assistant
+spec:
+  parentRefs:
+    - name: home-gateway
+      namespace: default
+      sectionName: http
+  hostnames:
+    - "home.cameronrosier.com"
+  rules:
+    - filters:
+        - type: RequestRedirect
+          requestRedirect:
+            scheme: https
+            statusCode: 301

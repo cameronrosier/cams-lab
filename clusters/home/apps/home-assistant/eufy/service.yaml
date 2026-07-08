@@ -1,0 +1,12 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: eufy-security-ws
+  namespace: home-assistant
+spec:
+  selector:
+    app: eufy-security-ws
+  ports:
+    - name: ws
+      port: 3000
+      targetPort: 3000
