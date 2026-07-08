@@ -3,6 +3,4 @@ kind: Kustomization
 resources:
   - ./namespace.yaml
   - ./ha
-  # Phase 2: uncomment after creating + sops-encrypting eufy/eufy-credentials-secret.yaml
-  # (see eufy/eufy-credentials-secret.yaml.example)
-  # - ./eufy
+  - ./eufy
