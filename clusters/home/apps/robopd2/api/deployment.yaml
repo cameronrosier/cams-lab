@@ -17,7 +17,7 @@ spec:
     spec:
       initContainers:
       - name: run-migrations
-        image: docker.io/robopd2/robopd2-api:main-20260211164420 # {"$imagepolicy": "robopd2:robopd2-api:init"}
+        image: docker.io/robopd2/robopd2-api:main-20260708190713 # {"$imagepolicy": "robopd2:robopd2-api"}
         command: ["alembic", "upgrade", "head"]
         env:
         - name: POSTGRES_PASSWORD
