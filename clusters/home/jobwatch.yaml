@@ -1,0 +1,37 @@
+---
+# jobwatch: big-tech job aggregator @ jobs.cameronrosier.com (CNAME → apex, wildcard cert)
+# Manifests live in the jobwatch repo (./k8s); deploy key (write — image automation
+# commits tag bumps back) created out-of-band: secret flux-system/jobwatch-deploy-key
+apiVersion: source.toolkit.fluxcd.io/v1
+kind: GitRepository
+metadata:
+  name: jobwatch
+  namespace: flux-system
+spec:
+  interval: 1m
+  url: ssh://git@github.com/cameronrosier/jobwatch
+  ref:
+    branch: main
+  secretRef:
+    name: jobwatch-deploy-key
+---
+apiVersion: kustomize.toolkit.fluxcd.io/v1
+kind: Kustomization
+metadata:
+  name: jobwatch
+  namespace: flux-system
+spec:
+  interval: 10m
+  dependsOn:
+    - name: image-reflector-controller
+  sourceRef:
+    kind: GitRepository
+    name: jobwatch
+  path: ./k8s
+  prune: true
+  wait: true
+  timeout: 5m
+  decryption:
+    provider: sops
+    secretRef:
+      name: sops-age
