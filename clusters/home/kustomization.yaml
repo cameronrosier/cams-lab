@@ -9,3 +9,4 @@ resources:
   - ./image-reflector-controller.yaml
   - ./infra.yaml
   - ./apps.yaml
+  - ./jobwatch.yaml

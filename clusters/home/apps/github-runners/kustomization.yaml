@@ -4,3 +4,4 @@ kind: Kustomization
 resources:
   - runnerdeployment-robopd2-api.yaml
   - runnerdeployment-robopd2-web.yaml
+  - runnerdeployment-jobwatch.yaml
